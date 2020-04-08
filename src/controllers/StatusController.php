@@ -116,7 +116,7 @@ class StatusController extends Controller {
 		return response()->json($this->data);
 	}
 	public function getStatusFilterData() {
-		$this->data['designation_list'] = collect(Designation::select('name', 'id')->where('company_id', Auth::user()->company_id)->get())->prepend(['id' => '', 'name' => 'Select Designation']);
+		// $this->data['designation_list'] = collect(Designation::select('name', 'id')->where('company_id', Auth::user()->company_id)->get())->prepend(['id' => '', 'name' => 'Select Designation']);
 		$this->data['success'] = true;
 		return response()->json($this->data);
 	}
