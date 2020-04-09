@@ -23,6 +23,7 @@ class StatusController extends Controller {
 	}
 
 	public function getStatusList(Request $request) {
+		//dd($request->all());
 		//dd('in');
 		$statuses = Status::withTrashed()
 			->join('configs as type', 'type.id', 'statuses.type_id')
@@ -56,7 +57,6 @@ class StatusController extends Controller {
 					$query->whereNotNull('statuses.deleted_at');
 				}
 			})
-			->get()
 		;
 
 		return Datatables::of($statuses)
