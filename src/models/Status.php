@@ -4,7 +4,7 @@ namespace Abs\StatusPkg;
 
 use Abs\HelperPkg\Traits\SeederTrait;
 use App\Company;
-use App\Config;
+use Abs\BasicPkg\Config;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -14,11 +14,9 @@ class Status extends Model {
 	protected $table = 'statuses';
 	public $timestamps = true;
 	protected $fillable = [
-		'code',
-		'designation_id',
-		'github_username',
-		'personal_email',
-		'alternate_mobile_number',
+		'type_id',
+		'name',
+		'color',
 	];
 
 	public function tasks() {
@@ -28,10 +26,11 @@ class Status extends Model {
 	public function user() {
 		return $this->hasOne('App\User', 'entity_id')->where('users.user_type_id', 1);
 	}
-	public function statusAttachment() {
-		return $this->hasOne('Abs\BasicPkg\Attachment', 'entity_id')->where('attachment_of_id', 120)->where('attachment_type_id', 140);
+	public function statusType() {
+		return $this->hasOne('Abs\BasicPkg\Config')->where('configs.config_type_id', 20);
 	}
 
+	
 	public static function createFromObject($record_data) {
 
 		$errors = [];

@@ -13,7 +13,7 @@ app.component('statusList', {
             laravel_routes['getStatusFilterData']
         ).then(function(response) {
             // console.log(response.data);
-            self.designation_list = response.data.designation_list;
+            self.type_list = response.data.type_list;
             $rootScope.loading = false;
         });
         self.add_permission = self.hasPermission('add-status');
@@ -52,19 +52,16 @@ app.component('statusList', {
                 type: "GET",
                 dataType: "json",
                 data: function(d) {
-                    d.code = $('#status_code').val();
-                    d.first_name = $('#first_name').val();
-                    d.last_name = $('#last_name').val();
-                    d.user_name = $('#user_name').val();
-                    d.mobile_number = $('#mobile_number').val();
-                    d.designation_id = $('#designation_id').val();
+                    d.name = $('#name').val();
+                    d.color = $('#color').val();
+                    d.type_id = $('#type_id').val();
                     d.status = $('#status').val();
                 },
             },
 
             columns: [
                 { data: 'action', class: 'action', name: 'action', searchable: false },
-                { data: 'type', name: 't.name' },
+                { data: 'type_name', name: 'type.name' },
                 { data: 'name', name: 'statuses.name' },
                 { data: 'color', name: 'statuses.color' },
             ],
@@ -89,6 +86,7 @@ app.component('statusList', {
 
         var dataTables = $('#statuses_list').dataTable();
         $("#search_status").keyup(function() {
+            console.log(this.value);
             dataTables.fnFilter(this.value);
         });
 
@@ -114,7 +112,7 @@ app.component('statusList', {
         }
 
         //FOR FILTER
-        self.status = [
+        self.status_list = [
             { id: '', name: 'Select Status' },
             { id: '1', name: 'Active' },
             { id: '0', name: 'Inactive' },
@@ -132,23 +130,15 @@ app.component('statusList', {
             }
         });
 
-        $('#status_code').on('keyup', function() {
+
+        $('#name').on('keyup', function() {
             dataTables.fnFilter();
         });
-        $('#first_name').on('keyup', function() {
+        $('#color').on('keyup', function() {
             dataTables.fnFilter();
         });
-        $('#last_name').on('keyup', function() {
-            dataTables.fnFilter();
-        });
-        $('#user_name').on('keyup', function() {
-            dataTables.fnFilter();
-        });
-        $('#mobile_number').on('keyup', function() {
-            dataTables.fnFilter();
-        });
-        $scope.onselectDesignation = function(id) {
-            $('#designation_id').val(id);
+        $scope.onselectType = function(id) {
+            $('#type_id').val(id);
             dataTables.fnFilter();
         }
 
@@ -157,12 +147,9 @@ app.component('statusList', {
             dataTables.fnFilter();
         }
         $scope.reset_filter = function() {
-            $("#status_code").val('');
-            $("#first_name").val('');
-            $("#last_name").val('');
-            $("#user_name").val('');
-            $("#mobile_number").val('');
-            $("#designation_id").val('');
+            $("#type_id").val('');
+            $("#name").val('');
+            $("#color").val('');
             $("#status").val('');
             dataTables.fnFilter();
         }
@@ -191,8 +178,8 @@ app.component('statusForm', {
         ).then(function(response) {
             // console.log(response);
             self.status = response.data.status;
-            self.designation_list = response.data.designation_list;
-            self.status_attchment_url = status_attchment_url;
+            console.log(self.status);
+            self.type_list = response.data.type_list;
             self.action = response.data.action;
             $rootScope.loading = false;
             if (self.action == 'Edit') {
@@ -201,88 +188,32 @@ app.component('statusForm', {
                 } else {
                     self.switch_value = 'Active';
                 }
-                if (self.status.password_change == 'No') {
-                    self.switch_password = 'No';
-                    $("#hide_password").hide();
-                    $("#password").prop('disabled', true);
-                } else {
-                    self.switch_password = 'Yes';
-                }
-                // console.log(response.data.status_attachment);
-                // if (response.data.status_attachment.name != '' && response.data.status_attachment.name != 'null') {
-                //     self.status_attachment_name = response.data.status_attachment.name;
-                // } else {
-                //     self.status_attachment_name = '';
-                // }
                 console.log(response.data.status);
 
             } else {
                 self.switch_value = 'Active';
-                $("#hide_password").show();
-                $("#password").prop('disabled', false);
-                self.switch_password = 'Yes';
-                self.status_attachment_name = '';
             }
         });
 
-        $scope.psw_change = function(val) {
-            if (val == 'No') {
-                $("#hide_password").hide();
-                $("#password").prop('disabled', true);
-            } else {
-                $("#hide_password").show();
-                setTimeout(function() {
-                    $noty.close();
-                }, 1000);
-                $("#password").prop('disabled', false);
-            }
-        }
 
-        $("input:text:visible:first").focus();
+        //$("input:select:visible:first").focus();
 
         var form_id = '#form';
         var v = jQuery(form_id).validate({
             ignore: '',
             rules: {
-                'code': {
+                'type_id': {
+                    required: true,
+                },
+                'name': {
                     required: true,
                     minlength: 3,
-                    maxlength: 64,
+                    maxlength: 191,
                 },
-                'user[first_name]': {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 64,
-                },
-                'user[last_name]': {
+                'color': {
                     required: true,
                     minlength: 3,
                     maxlength: 255,
-                },
-                'user[username]': {
-                    required: true,
-                    minlength: 3,
-                    maxlength: 32,
-                },
-                'alternate_mobile_number': {
-                    number: true,
-                    maxlength: 12,
-                },
-
-                'user[mobile_number]': {
-                    number: true,
-                    maxlength: 12,
-                },
-                'user[password]': {
-                    required: function(element) {
-                        if ($("#password_change").val() == 'Yes') {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    },
-                    minlength: 5,
-                    maxlength: 16,
                 },
             },
             submitHandler: function(form) {

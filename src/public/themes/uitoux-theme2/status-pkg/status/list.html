@@ -68,72 +68,57 @@
             <div class="modal-body">
                 <div class="modal-form">
                     <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Status Code</label>
-                                <input type="text" class="form-control" id="status_code" name="status_code" placeholder="Enter Status Code" autocomplete="off">
-                            </div><!-- Field -->
-                        </div><!-- Column -->
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>First Name</label>
-                                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter First Name" autocomplete="off">
-                            </div><!-- Field -->
-                        </div><!-- Column -->
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Last Name</label>
-                                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter Last Name" autocomplete="off">
-                            </div><!-- Field -->
-                        </div><!-- Column -->
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>User Name</label>
-                                <input type="text" class="form-control" id="user_name" name="user_name" placeholder="Enter User Name" autocomplete="off">
-                            </div><!-- Field -->
-                        </div><!-- Column -->
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Mobile Number</label>
-                                <input type="text" class="form-control" id="mobile_number" name="mobile_number" placeholder="Enter Mobile Number" autocomplete="off">
-                            </div><!-- Field -->
-                        </div><!-- Column -->
-                        <div class="col-sm-3">
+                        <div class="col-sm-6">
                             <div class="separate-form-group">
-                                <label>Designation</label>
-                                <ui-select ng-model="$ctrl.designation_id" theme="select2" ng-change="onselectDesignation($ctrl.designation_id)">
-                                    <ui-select-match placeholder="Select Designation">
+                                <label>Type</label>
+                                <ui-select ng-model="$ctrl.type_id" theme="select2" ng-change="onselectType($ctrl.type_id)">
+                                    <ui-select-match placeholder="Select Type">
                                         {{$select.selected.name || $select.selected}}
                                     </ui-select-match>
-                                    <ui-select-choices repeat="i.id as i in $ctrl.designation_list | propsFilter: {name: $select.search}">
+                                    <ui-select-choices repeat="i.id as i in $ctrl.type_list | propsFilter: {name: $select.search}">
                                         <div ng-bind-html="i.name | highlight: $select.search"></div>
                                     </ui-select-choices>
                                 </ui-select>
-                                <input type="hidden" name="designation_id" id="designation_id" value="" class="">
+                                <input type="hidden" name="type_id" id="type_id" value="" class="">
                             </div><!-- Field -->
                         </div><!-- Column -->
                         <div class="col-md-6">
-                            <div class="input-text form-group">
-                                <label>Status</label>
-                                <md-select ng-model="$ctrl.status.status" md-on-close="clearSearchTerm()" data-md-container-class="selectdemoSelectHeader" ng-change="onSelectedStatus($ctrl.status.status)" placeholder="Select Status">
-                                    <md-select-header class="demo-select-header">
-                                        <input ng-model="searchTerm" type="search" placeholder="Search for a Status" class="demo-header-searchbox md-text">
-                                    </md-select-header>
-                                    <md-optgroup>
-                                        <md-option ng-value="status.id" ng-repeat="status in $ctrl.status | filter:searchTerm">{{status.name}}</md-option>
-                                    </md-optgroup>
-                                </md-select>
-                                <input type="hidden" class="form-control" name="status" id="status" value="">
+                            <div class="form-group">
+                                <label> Name</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" autocomplete="off">
                             </div><!-- Field -->
                         </div><!-- Column -->
                         <div class="col-md-6">
-                            <button type="button" class="btn btn-rose my-tooltip" ng-click="reset_filter();$ctrl.status.status='';$ctrl.designation_id='';" ng-shortcut="'meta+shift+t'" ng-shortcut-click data-title="ctrl+shift+t">Reset Filter</button>
-                        </div>
-                    </div><!-- Row -->
-                </div><!-- Modal Form -->
-            </div><!-- Modal Body -->
-        </div><!-- Modal Content -->
-    </div><!-- Modal Dialog -->
+                            <div class="form-group">
+                                <label>Color</label>
+                                <input type="text" class="form-control" id="color" name="color" placeholder="Enter Last Name" autocomplete="off">
+                            </div><!-- Field -->
+                        </div><!-- Column -->
+                        <div class="col-sm-6">
+                            <div class="separate-form-group">
+                                <label>Status</label>
+                                <ui-select ng-model="$ctrl
+.status" theme="select2" ng-change="onSelectedStatus($ctrl.status)">
+                                    <ui-select-match placeholder="Select Status">
+                                        {{$select.selected.name || $select.selected}}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="i.id as i in $ctrl.status_list | propsFilter: {name: $select.search}">
+                                        <div ng-bind-html="i.name | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <input type="hidden" name="status" id="status" value="" class="">
+                            </div><!-- Field -->
+                        </div><!-- Column -->
+                    </div>
+                    <!--row-->
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-rose my-tooltip" ng-click="reset_filter();$ctrl.status='';$ctrl.type_id='';" ng-shortcut="'meta+shift+t'" ng-shortcut-click data-title="ctrl+shift+t">Reset Filter</button>
+                    </div>
+                </div><!-- Row -->
+            </div><!-- Modal Form -->
+        </div><!-- Modal Body -->
+    </div><!-- Modal Content -->
+</div><!-- Modal Dialog -->
 </div><!-- Modal -->
 <!-- Modal -->
 <div class="modal fade alert-modal failure" id="status-delete-modal" role="dialog" aria-labelledby="myModalLabel">
