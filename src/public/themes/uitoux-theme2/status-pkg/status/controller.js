@@ -5,18 +5,19 @@ app.component('statusList', {
         var self = this;
         $('#search_status').focus();
         self.hasPermission = HelperService.hasPermission;
-        // if (!self.hasPermission('statuses')) {
-        //     window.location = "#!/page-permission-denied";
-        //     return false;
-        // }
+        if (!self.hasPermission('statuses')) {
+            window.location = "#!/page-permission-denied";
+            return false;
+        }
         $http.get(
             laravel_routes['getStatusFilterData']
         ).then(function(response) {
-            // console.log(response.data);
             self.type_list = response.data.type_list;
             $rootScope.loading = false;
         });
+
         self.add_permission = self.hasPermission('add-status');
+
         var table_scroll;
         table_scroll = $('.page-main-content.list-page-content').height() - 37;
         var dataTable = $('#statuses_list').DataTable({
@@ -169,6 +170,8 @@ app.component('statusForm', {
             return false;
         }
         self.angular_routes = angular_routes;
+
+        $scope.color_picker_options = color_picker_options;
         $http.get(
             laravel_routes['getStatusFormData'], {
                 params: {
