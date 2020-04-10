@@ -49,6 +49,7 @@
                                 <th>Type</th>
                                 <th>Name</th>
                                 <th>Color</th>
+                                <th>Display Order</th>
                             </tr>
                         </thead>
                     </table>
@@ -94,11 +95,16 @@
                                 <input type="text" class="form-control" id="color" name="color" placeholder="Enter Last Name" autocomplete="off">
                             </div><!-- Field -->
                         </div><!-- Column -->
+                         <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Display Order</label>
+                                <input type="text" class="form-control" id="display_order" name="display_order" placeholder="Enter Display Order" autocomplete="off">
+                            </div>
+                        </div>
                         <div class="col-sm-6">
                             <div class="separate-form-group">
                                 <label>Status</label>
-                                <ui-select ng-model="$ctrl
-.status" theme="select2" ng-change="onSelectedStatus($ctrl.status)">
+                                <ui-select ng-model="$ctrl.status" theme="select2" ng-change="onSelectedStatus($ctrl.status)">
                                     <ui-select-match placeholder="Select Status">
                                         {{$select.selected.name || $select.selected}}
                                     </ui-select-match>

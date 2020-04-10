@@ -1,18 +1,15 @@
 <?php
 
 namespace Abs\StatusPkg;
-use Abs\BasicPkg\Attachment;
-use Abs\StatusPkg\Status;
 use Abs\BasicPkg\Config;
+use Abs\StatusPkg\Status;
 use App\Http\Controllers\Controller;
 use App\User;
 use Auth;
 use Carbon\Carbon;
 use DB;
 use Entrust;
-use File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Validator;
 use Yajra\Datatables\Datatables;
 
@@ -23,8 +20,7 @@ class StatusController extends Controller {
 	}
 
 	public function getStatusList(Request $request) {
-		//dd($request->all());
-		//dd('in');
+		// dd($request->all());
 		$statuses = Status::withTrashed()
 			->join('configs as type', 'type.id', 'statuses.type_id')
 			->select([
@@ -32,6 +28,7 @@ class StatusController extends Controller {
 				'type.name as type_name',
 				'statuses.name',
 				'statuses.color',
+				'statuses.display_order',
 				DB::raw('IF(statuses.deleted_at IS NULL, "Active","Inactive") as status'),
 			])
 			->where('statuses.company_id', Auth::user()->company_id)
@@ -48,6 +45,11 @@ class StatusController extends Controller {
 			->where(function ($query) use ($request) {
 				if (!empty($request->type_id)) {
 					$query->where('statuses.type_id', $request->type_id);
+				}
+			})
+			->where(function ($query) use ($request) {
+				if (!empty($request->display_order)) {
+					$query->where('statuses.display_order', $request->display_order);
 				}
 			})
 			->where(function ($query) use ($request) {
@@ -92,19 +94,19 @@ class StatusController extends Controller {
 		}
 		$this->data['success'] = true;
 		$this->data['status'] = $status;
-		$this->data['type_list'] = $task_type_list = Collect(Config::select('id', 'name')->where('config_type_id',20)->get())->prepend(['id' => '', 'name' => 'Select Type']);
+		$this->data['type_list'] = $task_type_list = Collect(Config::select('id', 'name')->where('config_type_id', 20)->get())->prepend(['id' => '', 'name' => 'Select Type']);
 		$this->data['action'] = $action;
 		return response()->json($this->data);
 	}
 	public function getStatusFilterData() {
-		$this->data['type_list'] = $task_type_list = Collect(Config::select('id', 'name')->where('config_type_id',20)->get())->prepend(['id' => '', 'name' => 'Select Type']);
+		$this->data['type_list'] = $task_type_list = Collect(Config::select('id', 'name')->where('config_type_id', 20)->get())->prepend(['id' => '', 'name' => 'Select Type']);
 
 		$this->data['success'] = true;
 		return response()->json($this->data);
 	}
 
 	public function saveStatus(Request $request) {
-		//dd($request->all());
+		// dd($request->all());
 		try {
 			$error_messages = [
 				'type_id.required' => 'Type is Required',
@@ -121,25 +123,25 @@ class StatusController extends Controller {
 				'type_id' => [
 					'required:true',
 					'exists:configs,id',
-					'unique:statuses,type_id,' . $request->id . ',id,company_id,' . Auth::user()->company_id.',name,'. $request->name,
+					'unique:statuses,type_id,' . $request->id . ',id,company_id,' . Auth::user()->company_id . ',name,' . $request->name,
 				],
 				'name' => [
 					'required:true',
 					'min:3',
 					'max:191',
-					'unique:statuses,name,' . $request->id . ',id,company_id,' . Auth::user()->company_id.',type_id,'. $request->type_id,
+					'unique:statuses,name,' . $request->id . ',id,company_id,' . Auth::user()->company_id . ',type_id,' . $request->type_id,
 				],
 				'color' => 'required|min:3|max:255',
 			], $error_messages);
 			if ($validator->fails()) {
 				return response()->json(['success' => false, 'errors' => $validator->errors()->all()]);
 			}
-			
+
 			DB::beginTransaction();
 			if (!$request->id) {
 				$status = new Status;
 				$status->company_id = Auth::user()->company_id;
-				
+
 				$status->created_by_id = Auth::user()->id;
 			} else {
 				$status = Status::withTrashed()->find($request->id);
@@ -150,6 +152,9 @@ class StatusController extends Controller {
 				$status->deleted_at = Carbon::now();
 			} else {
 				$status->deleted_at = NULL;
+			}
+			if ($request->display_order == NULL) {
+				$status->display_order = 999;
 			}
 			$status->save();
 

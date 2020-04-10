@@ -2,9 +2,9 @@
 
 namespace Abs\StatusPkg;
 
+use Abs\BasicPkg\Config;
 use Abs\HelperPkg\Traits\SeederTrait;
 use App\Company;
-use Abs\BasicPkg\Config;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -17,6 +17,7 @@ class Status extends Model {
 		'type_id',
 		'name',
 		'color',
+		'display_order',
 	];
 
 	public function tasks() {
@@ -30,7 +31,6 @@ class Status extends Model {
 		return $this->hasOne('Abs\BasicPkg\Config')->where('configs.config_type_id', 20);
 	}
 
-	
 	public static function createFromObject($record_data) {
 
 		$errors = [];

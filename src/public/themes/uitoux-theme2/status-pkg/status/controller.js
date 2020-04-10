@@ -55,6 +55,7 @@ app.component('statusList', {
                     d.name = $('#name').val();
                     d.color = $('#color').val();
                     d.type_id = $('#type_id').val();
+                    d.display_order = $('#display_order').val();
                     d.status = $('#status').val();
                 },
             },
@@ -64,6 +65,7 @@ app.component('statusList', {
                 { data: 'type_name', name: 'type.name' },
                 { data: 'name', name: 'statuses.name' },
                 { data: 'color', name: 'statuses.color' },
+                { data: 'display_order', name: 'statuses.display_order' },
             ],
             "infoCallback": function(settings, start, end, max, total, pre) {
                 $('#table_info').html(total)
@@ -137,6 +139,9 @@ app.component('statusList', {
         $('#color').on('keyup', function() {
             dataTables.fnFilter();
         });
+        $('#display_order').on('keyup', function() {
+            dataTables.fnFilter();
+        });
         $scope.onselectType = function(id) {
             $('#type_id').val(id);
             dataTables.fnFilter();
@@ -150,6 +155,7 @@ app.component('statusList', {
             $("#type_id").val('');
             $("#name").val('');
             $("#color").val('');
+            $("#display_order").val('');
             $("#status").val('');
             dataTables.fnFilter();
         }
