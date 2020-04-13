@@ -32,11 +32,11 @@ class StatusController extends Controller {
 				DB::raw('IF(statuses.deleted_at IS NULL, "Active","Inactive") as status'),
 			])
 			->where('statuses.company_id', Auth::user()->company_id)
-			->where(function ($query) use ($request) {
-				if (!empty($request->color)) {
-					$query->where('statuses.color', 'LIKE', '%' . $request->color . '%');
-				}
-			})
+		// ->where(function ($query) use ($request) {
+		// 	if (!empty($request->color)) {
+		// 		$query->where('statuses.color', 'LIKE', '%' . $request->color . '%');
+		// 	}
+		// })
 			->where(function ($query) use ($request) {
 				if (!empty($request->name)) {
 					$query->where('statuses.name', 'LIKE', '%' . $request->name . '%');

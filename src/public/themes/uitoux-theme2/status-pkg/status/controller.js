@@ -54,7 +54,7 @@ app.component('statusList', {
                 dataType: "json",
                 data: function(d) {
                     d.name = $('#name').val();
-                    d.color = $('#color').val();
+                    // d.color = $('#color').val();
                     d.type_id = $('#type_id').val();
                     d.display_order = $('#display_order').val();
                     d.status = $('#status').val();
@@ -137,9 +137,9 @@ app.component('statusList', {
         $('#name').on('keyup', function() {
             dataTables.fnFilter();
         });
-        $('#color').on('keyup', function() {
-            dataTables.fnFilter();
-        });
+        // $('#color').on('keyup', function() {
+        //     dataTables.fnFilter();
+        // });
         $('#display_order').on('keyup', function() {
             dataTables.fnFilter();
         });
@@ -155,7 +155,7 @@ app.component('statusList', {
         $scope.reset_filter = function() {
             $("#type_id").val('');
             $("#name").val('');
-            $("#color").val('');
+            // $("#color").val('');
             $("#display_order").val('');
             $("#status").val('');
             dataTables.fnFilter();
