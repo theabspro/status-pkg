@@ -27,6 +27,7 @@ class Status extends Model {
 	public function user() {
 		return $this->hasOne('App\User', 'entity_id')->where('users.user_type_id', 1);
 	}
+
 	public function statusType() {
 		return $this->hasOne('Abs\BasicPkg\Config')->where('configs.config_type_id', 20);
 	}

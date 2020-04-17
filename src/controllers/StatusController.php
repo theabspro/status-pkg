@@ -1,7 +1,7 @@
 <?php
 
 namespace Abs\StatusPkg;
-use Abs\BasicPkg\Config;
+use App\Config;
 use Abs\StatusPkg\Status;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -192,5 +192,36 @@ class StatusController extends Controller {
 			DB::rollBack();
 			return response()->json(['success' => false, 'errors' => ['Exception Error' => $e->getMessage()]]);
 		}
+	}
+
+	public function getTypeWiseStatus(Request $request) {
+
+		$status_types = Config::where('configs.config_type_id', 20)
+			->with([
+				'statuses',				
+			])
+			->get();
+
+		// $statuses = Status::withTrashed()
+		// 	->join('configs as type', 'type.id', 'statuses.type_id')
+		// 	->select([
+		// 		'statuses.id',
+		// 		'type.name as type_name',
+		// 		'statuses.name',
+		// 		'statuses.color',
+		// 		'statuses.display_order',
+		// 		DB::raw('IF(statuses.deleted_at IS NULL, "Active","Inactive") as status'),
+		// 	])
+		// 	->where('statuses.company_id', Auth::user()->company_id)
+
+		// 	// ->orderBy('display_order','asc')
+		// 	->get();
+		// $type_list = Collect(Config::select('id', 'name')->where('config_type_id', 20)->get())->prepend(['id' => '', 'name' => 'Select Type']);
+
+		return response()->json([
+			'success' => true,
+			'status_types' => $status_types,
+			// 'type_list' => $type_list,
+		]);		
 	}
 }

@@ -1,0 +1,87 @@
+<div class="modal fade filter" id="status-form-modal" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close ripple" data-dismiss="modal" aria-label="Close">
+                    <i class="glyphicon glyphicon-remove"></i>
+                </button>
+                <h5 class="modal-title" id="myModalLabel">
+                    <% $ctrl.status.id ? 'Edit' : 'Add' %> Statuses
+                    <!-- <% $ctrl.project_version ? '('+$ctrl.project_version.project.short_name+'-'+$ctrl.project_version.number+')' : '' %> -->
+                </h5>
+            </div><!-- Modal Header -->
+            <form id="status_form">
+                <input type="hidden" name="id" value="{{$ctrl.status.id}}">
+                <div class="modal-body">
+                    <div class="modal-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="separate-form-group">
+                                    <label>Type</label>
+                                    <ui-select ng-model="$ctrl.status.type_id" theme="select2">
+                                        <ui-select-match placeholder="Select Designation">
+                                            {{$select.selected.name || $select.selected}}
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="i.id as i in $ctrl.type_list | propsFilter: {name: $select.search}">
+                                            <div ng-bind-html="i.name | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <input type="hidden" name="type_id" value="{{$ctrl.status.type_id}}" class="">
+                                </div><!-- Field -->
+                            </div><!-- Column -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>
+                                        Name
+                                        <sup class="mandatory">*</sup>
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="$ctrl.status.name" name="name" />
+                                </div><!-- Field -->
+                            </div><!-- Column -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>
+                                        Color
+                                        <sup class="mandatory">*</sup>
+                                    </label>
+                                    <color-picker options="color_picker_options" ng-model="$ctrl.status.color"></color-picker>
+                                    <input type="text" ng-model="$ctrl.status.color" name="color" />
+                                </div><!-- Field -->
+                            </div><!-- Column -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>
+                                        Display Order
+                                    </label>
+                                    <input type="text" class="form-control" ng-model="$ctrl.status.display_order" name="display_order" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" />
+                                </div><!-- Field -->
+                            </div><!-- Column -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>
+                                        Active Status
+                                        <sup class="mandatory">*</sup>
+                                    </label>
+                                    <div class="tab-switch">
+                                        <md-switch ng-model="$ctrl.switch_value" aria-label="Switch 1" ng-true-value="'Inactive'" ng-false-value="'Active'" class="md-warn">
+                                            <% $ctrl.switch_value %>
+                                        </md-switch>
+                                        <input type="hidden" name="status" value="{{$ctrl.switch_value}}">
+                                    </div>
+                                </div><!-- Field -->
+                            </div><!-- Column -->
+                        </div>
+                        <!--row-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-rose" ng-click="saveStatus()">
+                                    Submit
+                                </button>
+                            </div>
+                        </div><!-- Row -->
+                    </div><!-- Modal Form -->
+                </div><!-- Modal Body -->
+            </form>
+        </div><!-- Modal Content -->
+    </div><!-- Modal Dialog -->
+</div><!-- Modal -->

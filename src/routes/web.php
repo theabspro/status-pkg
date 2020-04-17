@@ -8,5 +8,6 @@ Route::group(['namespace' => 'Abs\StatusPkg', 'middleware' => ['web', 'auth'], '
 	Route::post('/status/save', 'StatusController@saveStatus')->name('saveStatus');
 	Route::get('/status/delete', 'StatusController@deleteStatus')->name('deleteStatus');
 	Route::get('/status/get-filter-data', 'StatusController@getStatusFilterData')->name('getStatusFilterData');
+	Route::get('/status/card-list', 'StatusController@getTypeWiseStatus')->name('getTypeWiseStatus');
 
 });

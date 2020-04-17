@@ -257,3 +257,110 @@ app.component('statusForm', {
         });
     }
 });
+//------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------
+app.component('statusCardList', {
+    templateUrl: status_card_list_template_url,
+    controller: function($http, $location, HelperService, $scope, $routeParams, $rootScope) {
+        $scope.loading = true;
+        var self = this;
+        // console.log(' ======= ');
+        self.hasPermission = HelperService.hasPermission;
+        // if (!self.hasPermission('task_types')) {
+        //     window.location = "#!/page-permission-denied";
+        //     return false;
+        // }
+        self.add_permission = self.hasPermission('add-status');
+        $scope.status_modal_form_template_url = status_modal_form_template_url;
+
+        $http.get(
+            laravel_routes['getTypeWiseStatus']
+        ).then(function(response) {
+            if (!response.data.success) {
+                console(response);
+                showErrorNoty(response.data);
+                return;
+            }
+            $scope.status_types = response.data.status_types;
+            self.type_list = response.data.type_list;
+
+        });
+
+        $scope.showStatusForm = function(status) {
+            $('#status-form-modal').modal('show');
+            // $('#status-name').focus();
+            self.status = status;
+        }
+
+        $scope.saveStatus = function() {
+            var status_form = '#status_form';
+            var v = jQuery(status_form).validate({
+                ignore: '',
+                rules: {
+                    'name': {
+                        required: true,
+                    },
+                    'color': {
+                        required: true,
+                    },
+                },
+                invalidHandler: function(event, validator) {
+                    console.log(validator.errorList);
+                },
+                submitHandler: function(form) {
+                    let formData = new FormData($(status_form)[0]);
+                    $('#submit').button('loading');
+                    $.ajax({
+                            url: laravel_routes['saveStatus'],
+                            method: "POST",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                        })
+                        .done(function(res) {
+                            $('#submit').button('reset');
+                            if (!res.success) {
+                                showErrorNoty(res);
+                                return;
+                            }
+                            custom_noty('success', res.message);
+
+                            $('#status-form-modal').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+
+                            $route.reload();
+                        })
+                        .fail(function(xhr) {
+                            $('#submit').button('reset');
+                            custom_noty('error', 'Something went wrong at server');
+                        });
+                }
+            });
+        }
+
+        //         //DELETE
+        //         $scope.deleteTaskType = function($id) {
+        //             console.log("====");
+        //             $('#task-types-delete-modal').modal('show');
+        //             $('#task_type_id').val($id);
+        //         }
+        //         $scope.deleteConfirm = function() {
+        //             $id = $('#task_type_id').val();
+        //             $http.get(
+        //                 laravel_routes['deleteTaskType'], {
+        //                     params: {
+        //                         id: $id,
+        //                     }
+        //                 }
+        //             ).then(function(response) {
+        //                 if (response.data.success) {
+        //                     custom_noty('success', 'Task Types Deleted Successfully');
+        //                     $('#task_types_list').DataTable().ajax.reload(function(json) {});
+        //                     $location.path('/project-pkg/task-type/card-list');
+        //                 }
+        //             });
+        //         }
+
+    }
+});
