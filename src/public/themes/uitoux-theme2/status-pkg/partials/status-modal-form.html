@@ -11,7 +11,7 @@
                 </h5>
             </div><!-- Modal Header -->
             <form id="status_form">
-                <input type="hidden" name="id" value="{{$ctrl.status.id}}">
+                <input type="hidden" name="id" value="<% $ctrl.status.id %>">
                 <div class="modal-body">
                     <div class="modal-form">
                         <div class="row">
@@ -20,13 +20,13 @@
                                     <label>Type</label>
                                     <ui-select ng-model="$ctrl.status.type_id" theme="select2">
                                         <ui-select-match placeholder="Select Designation">
-                                            {{$select.selected.name || $select.selected}}
+                                            <% $select.selected.name || $select.selected
                                         </ui-select-match>
                                         <ui-select-choices repeat="i.id as i in $ctrl.type_list | propsFilter: {name: $select.search}">
                                             <div ng-bind-html="i.name | highlight: $select.search"></div>
                                         </ui-select-choices>
                                     </ui-select>
-                                    <input type="hidden" name="type_id" value="{{$ctrl.status.type_id}}" class="">
+                                    <input type="hidden" name="type_id" value="<% $ctrl.status.type_id %>" class="">
                                 </div><!-- Field -->
                             </div><!-- Column -->
                             <div class="col-sm-6">
@@ -66,7 +66,7 @@
                                         <md-switch ng-model="$ctrl.switch_value" aria-label="Switch 1" ng-true-value="'Inactive'" ng-false-value="'Active'" class="md-warn">
                                             <% $ctrl.switch_value %>
                                         </md-switch>
-                                        <input type="hidden" name="status" value="{{$ctrl.switch_value}}">
+                                        <input type="hidden" name="status" value="<% $ctrl.switch_value %>">
                                     </div>
                                 </div><!-- Field -->
                             </div><!-- Column -->

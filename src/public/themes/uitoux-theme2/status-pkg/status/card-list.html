@@ -4,9 +4,8 @@
             <div class="page-header-content-left">
                 <div class="page-header-content title-block">
                     <h1 class="title type-2">
-                        Statuses ()
+                        Statuses
                     </h1>
-                    <!-- <p class="subtitle">Masters / JV Masters / Employee Designation Designations</p> -->
                 </div><!-- Page Header Content -->
                 <div class="page-header-content button-block">
                     <button class="btn btn-bordered my-tooltip" data-toggle="modal" data-target="#status-filter-modal" ng-shortcut="'meta+shift+f'" ng-shortcut-click data-title="ctrl+shift+f"><i class="icon ion-md-funnel"></i>Filter</button>
@@ -41,7 +40,6 @@
                         <div class="panel-heading">
                             <h3 class="panel-title">
                                 {{status_type.name}}
-                                <!-- <div style="background-color: {{task_type.color}}; height:20px; width:20px;"> </div> -->
                             </h3>
                             <div>
                                 <div class="btn-group">
@@ -67,12 +65,6 @@
                                             </md-tooltip>
                                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-default" ng-click="$ctrl.module=module;showTaskForm({},0,$event)" title="Add Employee">
-                                            <md-tooltip md-direction="top">
-                                                Add Employee to {{designation.name}} Designation
-                                            </md-tooltip>
-                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                        </button>
                                         <button type="button" class="btn btn-sm btn-default" ng-click="deleteStatus(status.id,$event)">
                                             <md-tooltip md-direction="top">
                                                 Delete Status
@@ -83,94 +75,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div><!-- Column -->
-                </div><!-- Row -->
-            </div><!-- Container -->
-        </div><!-- Page Main Content -->
-    </div><!-- Content Wrap -->
-    <!-- Filter Modal -->
-    <div class="modal fade filter" id="status-filter-modal" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close ripple" data-dismiss="modal" aria-label="Close"><i class="icon ion-md-close"></i></button>
-                    <h5 class="modal-title" id="myModalLabel">Status Filter</h5>
-                </div><!-- Modal Header -->
-                <div class="modal-body">
-                    <div class="modal-form">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="separate-form-group">
-                                    <label>Type</label>
-                                    <ui-select ng-model="$ctrl.type_id" theme="select2" ng-change="onselectType($ctrl.type_id)">
-                                        <ui-select-match placeholder="Select Type">
-                                            {{$select.selected.name || $select.selected}}
-                                        </ui-select-match>
-                                        <ui-select-choices repeat="i.id as i in $ctrl.type_list | propsFilter: {name: $select.search}">
-                                            <div ng-bind-html="i.name | highlight: $select.search"></div>
-                                        </ui-select-choices>
-                                    </ui-select>
-                                    <input type="hidden" name="type_id" id="type_id" value="" class="">
-                                </div><!-- Field -->
-                            </div><!-- Column -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label> Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" autocomplete="off">
-                                </div><!-- Field -->
-                            </div><!-- Column -->
-                            <!--  <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Color</label>
-                                <input type="text" class="form-control" id="color" name="color" placeholder="Enter Last Name" autocomplete="off">
-                            </div>
-                        </div> -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Display Order</label>
-                                    <input type="text" class="form-control" id="display_order" name="display_order" placeholder="Enter Display Order" autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="separate-form-group">
-                                    <label>Status</label>
-                                    <ui-select ng-model="$ctrl.status" theme="select2" ng-change="onSelectedStatus($ctrl.status)">
-                                        <ui-select-match placeholder="Select Status">
-                                            {{$select.selected.name || $select.selected}}
-                                        </ui-select-match>
-                                        <ui-select-choices repeat="i.id as i in $ctrl.status_list | propsFilter: {name: $select.search}">
-                                            <div ng-bind-html="i.name | highlight: $select.search"></div>
-                                        </ui-select-choices>
-                                    </ui-select>
-                                    <input type="hidden" name="status" id="status" value="" class="">
-                                </div><!-- Field -->
-                            </div><!-- Column -->
-                        </div>
-                        <!--row-->
-                        <div class="col-md-6">
-                            <button type="button" class="btn btn-rose my-tooltip" ng-click="reset_filter();$ctrl.status='';$ctrl.type_id='';" ng-shortcut="'meta+shift+t'" ng-shortcut-click data-title="ctrl+shift+t">Reset Filter</button>
-                        </div>
-                    </div><!-- Row -->
-                </div><!-- Modal Form -->
-            </div><!-- Modal Body -->
-        </div><!-- Modal Content -->
-    </div><!-- Modal Dialog -->
-    <!-- Modal -->
-    <div class="modal fade alert-modal failure" id="status-delete-modal" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">ARE YOU SURE?</h4>
-                </div>
-                <div class="modal-body">
-                    <h5>Delete</h5>
-                    <p>You can’t retrive the data again, Are you sure you want to delete? </p>
-                    <input type="hidden" name="status_id" id="status_id" value="">
-                    <button class="btn btn-grey" data-dismiss="modal" aria-label="Close">Cancel</button>
-                    <button class="btn btn-rose" ng-click="deleteConfirm()" type="button" data-dismiss="modal" aria-label="Close">Yes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal -->
-    <ng-include src="status_modal_form_template_url" ng-init="status = $ctrl.status"></ng-include>
+                    </div>
+                </div><!-- Column -->
+            </div><!-- Row -->
+        </div><!-- Container -->
+    </div><!-- Page Main Content -->
+</div><!-- Content Wrap -->
+<ng-include src="status_modal_form_template_url" ng-init="status = $ctrl.status"></ng-include>

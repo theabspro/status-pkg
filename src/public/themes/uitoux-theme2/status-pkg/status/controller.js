@@ -264,7 +264,6 @@ app.component('statusCardList', {
     controller: function($http, $location, HelperService, $scope, $routeParams, $rootScope) {
         $scope.loading = true;
         var self = this;
-        // console.log(' ======= ');
         self.hasPermission = HelperService.hasPermission;
         // if (!self.hasPermission('task_types')) {
         //     window.location = "#!/page-permission-denied";
@@ -272,6 +271,7 @@ app.component('statusCardList', {
         // }
         self.add_permission = self.hasPermission('add-status');
         $scope.status_modal_form_template_url = status_modal_form_template_url;
+        $scope.task_type_modal_form_template_url = task_type_modal_form_template_url;
 
         $http.get(
             laravel_routes['getTypeWiseStatus']
