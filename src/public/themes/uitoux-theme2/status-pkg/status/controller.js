@@ -282,7 +282,9 @@ app.component('statusCardList', {
                 return;
             }
             $scope.status_types = response.data.status_types;
-            self.type_list = response.data.type_list;
+            self.status_types = response.data.status_types;
+
+            // self.type_list = response.data.type_list;
 
         });
 
@@ -339,28 +341,28 @@ app.component('statusCardList', {
             });
         }
 
-        //         //DELETE
-        //         $scope.deleteTaskType = function($id) {
-        //             console.log("====");
-        //             $('#task-types-delete-modal').modal('show');
-        //             $('#task_type_id').val($id);
-        //         }
-        //         $scope.deleteConfirm = function() {
-        //             $id = $('#task_type_id').val();
-        //             $http.get(
-        //                 laravel_routes['deleteTaskType'], {
-        //                     params: {
-        //                         id: $id,
-        //                     }
-        //                 }
-        //             ).then(function(response) {
-        //                 if (response.data.success) {
-        //                     custom_noty('success', 'Task Types Deleted Successfully');
-        //                     $('#task_types_list').DataTable().ajax.reload(function(json) {});
-        //                     $location.path('/project-pkg/task-type/card-list');
-        //                 }
-        //             });
-        //         }
+        //DELETE
+        $scope.deleteStatus = function($id) {
+            console.log("====");
+            $('#status-delete-modal').modal('show');
+            $('#status_id').val($id);
+        }
+        $scope.deleteConfirm = function() {
+            $id = $('#status_id').val();
+            $http.get(
+                laravel_routes['deleteStatus'], {
+                    params: {
+                        id: $id,
+                    }
+                }
+            ).then(function(response) {
+                if (response.data.success) {
+                    custom_noty('success', 'Task Types Deleted Successfully');
+                    $('#statuses_list').DataTable().ajax.reload(function(json) {});
+                    $location.path('/status-pkg/status/card-list');
+                }
+            });
+        }
 
     }
 });

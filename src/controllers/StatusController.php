@@ -145,6 +145,7 @@ class StatusController extends Controller {
 				$status->created_by_id = Auth::user()->id;
 			} else {
 				$status = Status::withTrashed()->find($request->id);
+				// dd($status);
 				$status->updated_by_id = Auth::user()->id;
 			}
 			$status->fill($request->all());
